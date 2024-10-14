@@ -91,6 +91,10 @@ impl State {
     pub fn send_open(&mut self, eos: bool) -> Result<(), UserError> {
         let local = Streaming;
 
+        if matches!(self.inner, Inner::Closed(_)) {
+            return Ok(());
+        }
+
         self.inner = match self.inner {
             Idle => {
                 if eos {
